@@ -3,50 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Audio Player</title>
+    <title>Falling Sand Simulation</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #222;
         }
     </style>
 </head>
 <body>
-    <h1>Random Audio Player</h1>
-    <audio id="audioPlayer" controls></audio>
-    <button onclick="playRandomAudio()">Play Random Audio</button>
+    <canvas id="sandCanvas"></canvas>
 
     <script>
-        function playRandomAudio() {
-            const audioSources = [
-                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-            ];
-            const randomIndex = Math.floor(Math.random() * audioSources.length);
-            const audioPlayer = document.getElementById("audioPlayer");
-            audioPlayer.src = audioSources[randomIndex];
-            audioPlayer.play();
+        const canvas = document.getElementById("sandCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const groundLevel = canvas.height - 50; // Height of the ground
+
+        // Particle class
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 3 + 1; // Random size
+                this.speedY = Math.random() * 2 + 1; // Random falling speed
+            }
+
+            update() {
+                if (this.y + this.size < groundLevel) {
+                    this.y += this.speedY; // Fall down
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = "#FFF";
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
-    </script>
-</body>
-</html>
+
+        // Add particles on click
+        canvas.addEventListener("click", (e) => {
+            for (let i = 0; i < 50; i++) {
+                const x = e.clientX + (Math.random() * 10 - 5);
+                const y = e.clientY + (Math.random() * 10 - 5);
+                particles.push(new Particle(x, y));
+            }
+        });
+
+        // Animation loop
+        function
