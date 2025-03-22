@@ -3,58 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Falling Sand Simulation</title>
+    <title>Random Word Generator</title>
     <style>
-        canvas {
-            display: block;
-            margin: 0 auto;
-            background-color: #222;
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input {
+            margin: 10px;
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <canvas id="sandCanvas"></canvas>
+    <h1>Random Word Generator</h1>
+    <input id="wordLength" type="number" placeholder="Word Length (e.g., 4)">
+    <input id="startsWith" type="text" placeholder="Word must start with">
+    <input id="endsWith" type="text" placeholder="Word must end with">
+    <button onclick="generateWord()">Generate</button>
+    <p id="result" style="font-size: 20px; font-weight: bold;"></p>
 
     <script>
-        const canvas = document.getElementById("sandCanvas");
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const dictionary = [
+            "cool", "good", "neat", "lit", "fire", "lush", "easy", "rock", 
+            "chic", "ball", "beat", "fast", "hype", "kick", "vibe", "slay"
+        ];
 
-        const particles = [];
-        const groundLevel = canvas.height - 50; // Height of the ground
+        function generateWord() {
+            const length = parseInt(document.getElementById("wordLength").value) || 4;
+            const startsWith = document.getElementById("startsWith").value.toLowerCase();
+            const endsWith = document.getElementById("endsWith").value.toLowerCase();
 
-        // Particle class
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 3 + 1; // Random size
-                this.speedY = Math.random() * 2 + 1; // Random falling speed
-            }
+            const filteredWords = dictionary.filter(word => 
+                word.length === length &&
+                (!startsWith || word.startsWith(startsWith)) &&
+                (!endsWith || word.endsWith(endsWith))
+            );
 
-            update() {
-                if (this.y + this.size < groundLevel) {
-                    this.y += this.speedY; // Fall down
-                }
-            }
-
-            draw() {
-                ctx.fillStyle = "#FFF";
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            const randomWord = filteredWords.length > 0 ? 
+                filteredWords[Math.floor(Math.random() * filteredWords.length)] : 
+                "No words found!";
+            
+            document.getElementById("result").textContent = randomWord;
         }
-
-        // Add particles on click
-        canvas.addEventListener("click", (e) => {
-            for (let i = 0; i < 50; i++) {
-                const x = e.clientX + (Math.random() * 10 - 5);
-                const y = e.clientY + (Math.random() * 10 - 5);
-                particles.push(new Particle(x, y));
-            }
-        });
-
-        // Animation loop
-        function
+    </script>
+</body>
+</html>
