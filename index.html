@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recent Roblox User ID</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Messaging</title>
+  <style>
+    #messageArea {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    #textbox {
+      width: 100%;
+      padding: 8px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Most Recent Roblox User ID</h1>
-    <div id="user-id">Loading...</div>
-    <script src="script.js"></script>
+  <div id="messageArea"></div>
+  <input type="text" id="textbox" placeholder="Type a message and press Enter..." />
+  <script src="/client.js"></script>
 </body>
 </html>
