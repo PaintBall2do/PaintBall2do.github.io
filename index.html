@@ -45,27 +45,31 @@
     <p id="result" style="font-size: 20px; font-weight: bold;"></p>
 
     <script>
-        const dictionary = [
-            "cool", "good", "neat", "lit", "fire", "lush", "easy", "rock", 
-            "chic", "ball", "beat", "fast", "hype", "kick", "vibe", "slay"
-        ];
-
-        function generateWord() {
+        async function generateWord() {
             const length = parseInt(document.getElementById("wordLength").value) || 4;
             const startsWith = document.getElementById("startsWith").value.toLowerCase();
             const endsWith = document.getElementById("endsWith").value.toLowerCase();
 
-            const filteredWords = dictionary.filter(word => 
-                word.length === length &&
-                (!startsWith || word.startsWith(startsWith)) &&
-                (!endsWith || word.endsWith(endsWith))
-            );
+            try {
+                const response = await fetch("https://api.urbandictionary.com/v0/random");
+                const data = await response.json();
+                const words = data.list.map(item => item.word);
 
-            const randomWord = filteredWords.length > 0 ? 
-                filteredWords[Math.floor(Math.random() * filteredWords.length)] : 
-                "No words found!";
-            
-            document.getElementById("result").textContent = randomWord;
+                const filteredWords = words.filter(word =>
+                    word.length === length &&
+                    (!startsWith || word.startsWith(startsWith)) &&
+                    (!endsWith || word.endsWith(endsWith))
+                );
+
+                const randomWord = filteredWords.length > 0
+                    ? filteredWords[Math.floor(Math.random() * filteredWords.length)]
+                    : "No words found!";
+                
+                document.getElementById("result").textContent = randomWord;
+            } catch (error) {
+                console.error("Error fetching words:", error);
+                document.getElementById("result").textContent = "Error fetching words!";
+            }
         }
     </script>
 </body>
