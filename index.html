@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Image Viewer</title>
+    <title>Truly Random Image Viewer</title>
     <style>
         body {
             display: flex;
@@ -24,12 +24,21 @@
 <body>
     <img id="randomImage" alt="Random Image">
     <script>
-        function fetchRandomImage() {
-            const imageUrl = `https://picsum.photos/800/600?random=${Date.now()}`;
-            document.getElementById('randomImage').src = imageUrl;
+        async function fetchRandomImage() {
+            try {
+                const keywords = ['sun', 'cat', 'forest', 'galaxy', 'food', 'abstract'];
+                const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+                const response = await fetch(`https://api.bing.microsoft.com/v7.0/images/search?q=${randomKeyword}&count=1&offset=${Math.floor(Math.random() * 50)}`, {
+                    headers: { 'Ocp-Apim-Subscription-Key': 'YOUR_BING_API_KEY' }
+                });
+                const data = await response.json();
+                const imageUrl = data.value[0].contentUrl;
+                document.getElementById('randomImage').src = imageUrl;
+            } catch (error) {
+                console.error('Error fetching random image:', error);
+            }
         }
         fetchRandomImage();
     </script>
 </body>
 </html>
-
