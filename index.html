@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Truly Random Image Viewer</title>
+    <title>Random Audio Player</title>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -14,23 +15,38 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
-        img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <img id="randomImage" alt="Random Image">
+    <h1>Random Audio Player</h1>
+    <audio id="audioPlayer" controls></audio>
+    <button onclick="playRandomAudio()">Play Random Audio</button>
+
     <script>
-        function fetchRandomImage() {
-            const randomKeywords = ["porn", "yiff", "furry", "renamon"];
-            const randomKeyword = randomKeywords[Math.floor(Math.random() * randomKeywords.length)];
-            const imageUrl = `https://loremflickr.com/800/600/${randomKeyword}?random=${Date.now()}`;
-            document.getElementById('randomImage').src = imageUrl;
+        function playRandomAudio() {
+            const audioSources = [
+                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+            ];
+            const randomIndex = Math.floor(Math.random() * audioSources.length);
+            const audioPlayer = document.getElementById("audioPlayer");
+            audioPlayer.src = audioSources[randomIndex];
+            audioPlayer.play();
         }
-        fetchRandomImage();
     </script>
 </body>
 </html>
